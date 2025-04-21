@@ -1,0 +1,183 @@
+<?php
+include 'amadeus_token.php';
+
+$origem = $_POST['origem'] ?? null;
+$destino = $_POST['destino'] ?? null;
+$ida = $_POST['ida'] ?? null;
+$tipo_viagem = $_POST['tipo_viagem'] ?? null;
+$volta = $_POST['volta'] ?? null;
+$adultos = $_POST['adultos'] ?? 0;
+$criancas = $_POST['criancas'] ?? 0;
+$passageiros = $adultos + $criancas; // Calculando o total de passageiros (adultos + crianças)
+
+// Verificando se os campos obrigatórios foram preenchidos
+if (empty($origem) || empty($destino) || empty($ida) || empty($tipo_viagem) || $adultos < 1) {
+    $mensagem = "Por favor, preencha todos os campos obrigatórios.";
+    $preco = null;
+} else {
+    $token = getAmadeusToken();
+
+    // Configurando parâmetros para consulta na API
+    $params = [
+        'originLocationCode' => $origem,
+        'destinationLocationCode' => $destino,
+        'departureDate' => $ida,
+        'adults' => $adultos, // Apenas adultos são informados na API
+        'children' => $criancas, // Incluindo crianças
+        'currencyCode' => 'BRL',
+        'max' => 3, // Para exibir mais opções
+    ];
+
+    if ($tipo_viagem === 'roundtrip' && !empty($volta)) {
+        $params['returnDate'] = $volta;
+    }
+
+    $queryString = http_build_query($params);
+    $url = "https://test.api.amadeus.com/v2/shopping/flight-offers?" . $queryString;
+
+    // Realizando a requisição cURL
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer $token",
+            "Content-Type: application/json"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    
+    // Tratando erros da requisição cURL
+    if ($response === false) {
+        $mensagem = "Erro ao realizar a requisição à API. Tente novamente.";
+        $preco = null;
+    } else {
+        $data = json_decode($response, true);
+
+        if (!isset($data['data'][0])) {
+            $mensagem = "Nenhum resultado encontrado. Verifique os dados.";
+            $preco = null;
+        } else {
+            // Exibindo os resultados das passagens
+            $preco = $data['data'][0]['price']['total'];
+            $mensagem = "Viagem de $origem para $destino, ida em $ida" .
+                        ($tipo_viagem === 'roundtrip' ? " e volta em $volta" : "") .
+                        " para $adultos adulto(s) e $criancas criança(s), totalizando $passageiros pessoa(s), por R$ $preco.";
+        }
+    }
+
+    curl_close($curl);
+}
+
+$linkWhatsapp = "https://wa.me/555197270641?text=" . urlencode($mensagem);
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Busca</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Estilo para garantir que o vídeo ocupe toda a tela */
+        video {
+            position: fixed; /* Fixa o vídeo na tela */
+            top: 0;
+            left: 0;
+            width: 100vw; /* 100% da largura da tela */
+            height: 100vh; /* 100% da altura da tela */
+            object-fit: cover; /* Faz o vídeo cobrir toda a tela, mantendo a proporção */
+            z-index: -1; /* Coloca o vídeo atrás do conteúdo */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Fundo semitransparente */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1; /* Garante que o conteúdo fique acima do vídeo */
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #004080;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<video autoplay muted loop>
+    <source src="video2.mp4" type="video/mp4">
+    Seu navegador não suporta o formato de vídeo MP4.
+</video>
+
+<div class="container">
+    <h2>Resultado da Busca</h2>
+    <p><strong><?= $mensagem ?></strong></p>
+
+    <?php if ($preco): ?>
+        <a href="<?= $linkWhatsapp ?>" target="_blank">
+            <button>Enviar para o WhatsApp</button>
+        </a>
+    <?php endif; ?>
+</div>
+
+</body>
+</html>

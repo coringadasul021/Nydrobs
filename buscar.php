@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Passagens</title>
+    <style>
+        /* Estilo básico para o corpo */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            position: relative;
+        }
+
+        /* Vídeo de fundo */
+        #video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Container do formulário */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Formulário com colunas do mesmo tamanho */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Garantir que os campos sejam do mesmo tamanho */
+        select, input[type="date"], input[type="number"], button {
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%; /* Garante que todos os campos tenham o mesmo tamanho */
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004080;
+        }
+
+        /* Caixa de data de volta (aparece apenas para ida e volta) */
+        #voltaBox {
+            display: none;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            select, input[type="date"], input[type="number"], button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vídeo de fundo -->
+    <video id="video-background" autoplay muted loop>
+        <source src="video.mp4" type="video/mp4">
+        Seu navegador não suporta o elemento de vídeo.
+    </video>
+
+    <!-- Container com o formulário -->
+    <div class="container">
+        <h2>Buscar Passagens de Avião</h2>
+        <form action="search.php" method="POST">
+            <!-- Origem -->
+            <label for="origem">Origem:</label>
+            <select name="origem" id="origem" required>
+                <optgroup label="Acre (AC)">
+                    <option value="RIO">Rio Branco (AC)</option>
+                </optgroup>
+                <optgroup label="Alagoas (AL)">
+                    <option value="MCZ">Maceió (AL)</option>
+                </optgroup>
+                <optgroup label="Amazonas (AM)">
+                    <option value="MAO">Manaus (AM)</option>
+                </optgroup>
+                <optgroup label="Bahia (BA)">
+                    <option value="SSA">Salvador (BA)</option>
+                    <option value="BPS">Ilhéus (BA)</option>
+                </optgroup>
+                <optgroup label="Ceará (CE)">
+                    <option value="FOR">Fortaleza (CE)</option>
+                </optgroup>
+                <optgroup label="Espírito Santo (ES)">
+                    <option value="VIX">Vitória (ES)</option>
+                </optgroup>
+                <optgroup label="Goiás (GO)">
+                    <option value="GYN">Goiânia (GO)</option>
+                </optgroup>
+                <optgroup label="Maranhão (MA)">
+                    <option value="SLZ">São Luís (MA)</option>
+                </optgroup>
+                <optgroup label="Mato Grosso (MT)">
+                    <option value="CGB">Cuiabá (MT)</option>
+                </optgroup>
+                <optgroup label="Mato Grosso do Sul (MS)">
+                    <option value="CGR">Campo Grande (MS)</option>
+                </optgroup>
+                <optgroup label="Minas Gerais (MG)">
+                    <option value="CNF">Belo Horizonte (MG)</option>
+                    <option value="PLU">Uberlândia (MG)</option>
+                </optgroup>
+                <optgroup label="Pará (PA)">
+                    <option value="BEL">Belém (PA)</option>
+                </optgroup>
+                <optgroup label="Paraíba (PB)">
+                    <option value="JPA">João Pessoa (PB)</option>
+                </optgroup>
+                <optgroup label="Paraná (PR)">
+                    <option value="CWB">Curitiba (PR)</option>
+                </optgroup>
+                <optgroup label="Pernambuco (PE)">
+                    <option value="REC">Recife (PE)</option>
+                </optgroup>
+                <optgroup label="Piauí (PI)">
+                    <option value="THE">Teresina (PI)</option>
+                </optgroup>
+                <optgroup label="Rio de Janeiro (RJ)">
+                    <option value="GIG">Rio de Janeiro (RJ)</option>
+                    <option value="SDU">Rio de Janeiro (SDU)</option>
+                </optgroup>
+                <optgroup label="Rio Grande do Norte (RN)">
+                    <option value="NAT">Natal (RN)</option>
+                </optgroup>
+                <optgroup label="Rio Grande do Sul (RS)">
+                    <option value="POA">Porto Alegre (RS)</option>
+                </optgroup>
+                <optgroup label="Rondônia (RO)">
+                    <option value="PVH">Porto Velho (RO)</option>
+                </optgroup>
+                <optgroup label="Roraima (RR)">
+                    <option value="BVB">Boa Vista (RR)</option>
+                </optgroup>
+                <optgroup label="Santa Catarina (SC)">
+                    <option value="FLN">Florianópolis (SC)</option>
+                </optgroup>
+                <optgroup label="São Paulo (SP)">
+                    <option value="GRU">São Paulo (GRU)</option>
+                    <option value="CGH">São Paulo (CGH)</option>
+                    <option value="VCP">Campinas (VCP)</option>
+                </optgroup>
+                <optgroup label="Sergipe (SE)">
+                    <option value="AJU">Aracaju (SE)</option>
+                </optgroup>
+                <optgroup label="Tocantins (TO)">
+                    <option value="PMW">Palmas (TO)</option>
+                </optgroup>
+            </select>
+
+            <!-- Destino -->
+            <label for="destino">Destino:</label>
+            <select name="destino" id="destino" required>
+               <optgroup label="Acre (AC)">
+                    <option value="RIO">Rio Branco (AC)</option>
+                </optgroup>
+                <optgroup label="Alagoas (AL)">
+                    <option value="MCZ">Maceió (AL)</option>
+                </optgroup>
+                <optgroup label="Amazonas (AM)">
+                    <option value="MAO">Manaus (AM)</option>
+                </optgroup>
+                <optgroup label="Bahia (BA)">
+                    <option value="SSA">Salvador (BA)</option>
+                    <option value="BPS">Ilhéus (BA)</option>
+                </optgroup>
+                <optgroup label="Ceará (CE)">
+                    <option value="FOR">Fortaleza (CE)</option>
+                </optgroup>
+                <optgroup label="Espírito Santo (ES)">
+                    <option value="VIX">Vitória (ES)</option>
+                </optgroup>
+                <optgroup label="Goiás (GO)">
+                    <option value="GYN">Goiânia (GO)</option>
+                </optgroup>
+                <optgroup label="Maranhão (MA)">
+                    <option value="SLZ">São Luís (MA)</option>
+                </optgroup>
+                <optgroup label="Mato Grosso (MT)">
+                    <option value="CGB">Cuiabá (MT)</option>
+                </optgroup>
+                <optgroup label="Mato Grosso do Sul (MS)">
+                    <option value="CGR">Campo Grande (MS)</option>
+                </optgroup>
+                <optgroup label="Minas Gerais (MG)">
+                    <option value="CNF">Belo Horizonte (MG)</option>
+                    <option value="PLU">Uberlândia (MG)</option>
+                </optgroup>
+                <optgroup label="Pará (PA)">
+                    <option value="BEL">Belém (PA)</option>
+                </optgroup>
+                <optgroup label="Paraíba (PB)">
+                    <option value="JPA">João Pessoa (PB)</option>
+                </optgroup>
+                <optgroup label="Paraná (PR)">
+                    <option value="CWB">Curitiba (PR)</option>
+                </optgroup>
+                <optgroup label="Pernambuco (PE)">
+                    <option value="REC">Recife (PE)</option>
+                </optgroup>
+                <optgroup label="Piauí (PI)">
+                    <option value="THE">Teresina (PI)</option>
+                </optgroup>
+                <optgroup label="Rio de Janeiro (RJ)">
+                    <option value="GIG">Rio de Janeiro (RJ)</option>
+                    <option value="SDU">Rio de Janeiro (SDU)</option>
+                </optgroup>
+                <optgroup label="Rio Grande do Norte (RN)">
+                    <option value="NAT">Natal (RN)</option>
+                </optgroup>
+                <optgroup label="Rio Grande do Sul (RS)">
+                    <option value="POA">Porto Alegre (RS)</option>
+                </optgroup>
+                <optgroup label="Rondônia (RO)">
+                    <option value="PVH">Porto Velho (RO)</option>
+                </optgroup>
+                <optgroup label="Roraima (RR)">
+                    <option value="BVB">Boa Vista (RR)</option>
+                </optgroup>
+                <optgroup label="Santa Catarina (SC)">
+                    <option value="FLN">Florianópolis (SC)</option>
+                </optgroup>
+                <optgroup label="São Paulo (SP)">
+                    <option value="GRU">São Paulo (GRU)</option>
+                    <option value="CGH">São Paulo (CGH)</option>
+                    <option value="VCP">Campinas (VCP)</option>
+                </optgroup>
+                <optgroup label="Sergipe (SE)">
+                    <option value="AJU">Aracaju (SE)</option>
+                </optgroup>
+                <optgroup label="Tocantins (TO)">
+                    <option value="PMW">Palmas (TO)</option>
+                </optgroup>
+            </select>
+
+            <!-- Tipo de viagem -->
+            <label for="tipo_viagem">Tipo de viagem:</label>
+            <select name="tipo_viagem" id="tipo_viagem" onchange="toggleVolta()" required>
+                <option value="oneway">Só ida</option>
+                <option value="roundtrip">Ida e volta</option>
+            </select>
+
+            <!-- Data de ida -->
+            <label for="ida">Data de ida:</label>
+            <input type="date" name="ida" id="ida" required>
+
+            <!-- Data de volta (aparece apenas para ida e volta) -->
+            <div id="voltaBox">
+                <label for="volta">Data de volta:</label>
+                <input type="date" name="volta" id="volta">
+            </div>
+
+            <!-- Quantidade de adultos -->
+            <label for="adultos">Quantidade de adultos:</label>
+            <input type="number" name="adultos" id="adultos" value="1" min="1" required>
+
+            <!-- Quantidade de crianças -->
+            <label for="criancas">Quantidade de crianças:</label>
+            <input type="number" name="criancas" id="criancas" value="0" min="0" required>
+
+            <!-- Botão de enviar -->
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para mostrar ou esconder o campo de "Data de volta"
+        function toggleVolta() {
+            const tipo = document.getElementById("tipo_viagem").value;
+            const voltaBox = document.getElementById("voltaBox");
+            if (tipo === "roundtrip") {
+                voltaBox.style.display = "block";
+            } else {
+                voltaBox.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

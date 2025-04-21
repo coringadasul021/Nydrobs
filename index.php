@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nydrobs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* PRELOADER */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #002147;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    .loading-button {
+      background-color: white;
+      color: #002147;
+      font-weight: bold;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .loading-button::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border: 3px solid #002147;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7fa;
+      overflow-x: hidden;
+      padding-top: 130px;
+      display: none;
+    }
+
+    header {
+      background-color: #002147;
+      color: white;
+      padding: 10px 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 70px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 5px;
+      background-color: #003366;
+      transition: background 0.3s;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #004080;
+    }
+
+    main {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    main video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: -1;
+      background-color: black;
+    }
+
+    .social-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10;
+    }
+
+    .social-button {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background-color: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      text-decoration: none;
+    }
+
+    .social-button.instagram {
+      background-color: #FFB6C1;
+    }
+
+    .social-button img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .footer {
+      background-color: #002147;
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer img {
+      height: 70px;
+    }
+
+    .footer-text {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+
+    .footer-video {
+      width: 100%;
+      background-color: black;
+    }
+
+    .footer-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .nav-buttons {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <button class="loading-button">Carregando...</button>
+  </div>
+
+  <!-- CONTEÚDO DO SITE -->
+  <header>
+    <div class="header-top">
+      <img class="logo" src="https://cdn.discordapp.com/attachments/1360676887252439272/1363643700332462200/NYDROBS_20250420_193243_0000.png?ex=6806c7a9&is=68057629&hm=02b1705e31574c7365295984798c1afb11070f4d454a0e38146e0829a8b0296d&" alt="Logo Nydrobs De Cima">
+    </div>
+    <div class="nav-buttons">
+      <a href="buscar.php">Voos</a>
+      <a href="hospedagem.php">Hospedagem</a>
+      <a href="onibus.php">Ônibus</a>
+      <a href="https://latampass.latam.com/pt_br/">Milhas</a>
+      <a href="https://www.latamairlines.com/br/pt/imprensa/noticias">Notícias</a>
+    </div>
+  </header>
+
+  <main>
+    <video autoplay loop muted playsinline>
+      <source src="site.mp4" type="video/mp4" />
+      Seu navegador não suporta vídeo HTML5.
+    </video>
+  </main>
+
+  <div class="footer">
+    <img src="https://cdn.discordapp.com/attachments/1360676887252439272/1363643700332462200/NYDROBS_20250420_193243_0000.png?ex=6806c7a9&is=68057629&hm=02b1705e31574c7365295984798c1afb11070f4d454a0e38146e0829a8b0296d&" alt="Logo Nydrobs De Baixo">
+    <div class="footer-text">
+      <p>Sobre
+
+A NYDROBS é uma empresa especializada na comercialização de passagens aéreas por meio da utilização de milhas, oferecendo aos clientes uma alternativa inteligente, econômica e segura para suas viagens nacionais e internacionais. Atuando com transparência e compromisso, a NYDROBS conecta viajantes às melhores oportunidades do mercado, otimizando o uso de milhas e proporcionando experiências de viagem com qualidade, economia e tranquilidade.
+
+Nosso objetivo é democratizar o acesso a passagens aéreas, tornando as milhas um recurso acessível a todos, mesmo para quem não acumula pontos em programas de fidelidade. Trabalhamos com sistemas confiáveis, parceiros reconhecidos e suporte dedicado, garantindo segurança em cada transação.
+
+A NYDROBS valoriza a ética, a confiança e o respeito aos clientes, buscando sempre soluções personalizadas e vantajosas para transformar o jeito de viajar no Brasil e no mundo.</p>
+    </div>
+  </div>
+
+  <div class="footer-video">
+    <video autoplay loop muted playsinline>
+      <source src="menu.mp4" type="video/mp4" />
+      Seu navegador não suporta vídeo HTML5.
+    </video>
+  </div>
+
+  <div class="social-buttons">
+    <a href="https://wa.me/555197270641" target="_blank" class="social-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+    </a>
+    <a href="https://www.instagram.com/nydrobs_oficial" target="_blank" class="social-button instagram">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+    </a>
+  </div>
+
+  <script>
+    // Após 1 segundos, oculta o preloader e exibe o conteúdo do site
+    setTimeout(function () {
+      document.getElementById('preloader').style.display = 'none';
+      document.body.style.display = 'block';
+    }, 1000);
+  </script>
+</body>
+</html>
